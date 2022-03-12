@@ -1,0 +1,66 @@
+package com.example.lailatopapp;
+
+import android.app.ListActivity;
+import android.app.SearchManager;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+public class PolrestaPekanbaru extends ListActivity {
+    protected void onCreate (Bundle icicle) {
+        super.onCreate(icicle);
+        String[] listAct = new String[] {"Call Center","SMS Center", "Driving Direction",
+                "Website", "Info di Google", "Exit"};
+        this.setListAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,listAct));
+    }
+
+    protected  void onListItemClick (ListView l, View v, int position, long id){
+        super.onListItemClick(l, v, position, id);
+        Object o = this.getListAdapter().getItem(position);
+        String pilihan = o.toString();
+        tampilankanpilihan(pilihan);
+    }
+
+    private void tampilankanpilihan(String pilihan) {
+        try {
+            Intent a = null;
+            if (pilihan.equals("Call Center")) {
+                String nomortel = "tel:0761-21110";
+                a = new Intent(Intent.ACTION_DIAL, Uri.parse(nomortel));
+
+            } else if (pilihan.equals("SMS Center"))
+            {
+                String smsText="Nur Laila /P";
+                a = new Intent(Intent.ACTION_VIEW);
+                a.setData(Uri.parse("sms:0761-21110"));
+                a.putExtra("sms_body", smsText);
+            }else if (pilihan.equals("Driving Direction"))
+            {
+                String lokasirs = "https://www.google.com/maps/place/Polresta+Pekanbaru/@0.533548,101.443315,16z/data=!4m5!3m4!1s0x0:0xf09dd0c61bcb93e3!8m2!3d0.5335557!4d101.443234?hl=ms";
+                a = new Intent(Intent.ACTION_VIEW,Uri.parse(lokasirs));
+            }else if (pilihan.equals("Website"))
+            {
+                String website = "https://www.polrestapekanbaru.com/";
+                a = new Intent(Intent.ACTION_VIEW,Uri.parse(website));
+            }else if (pilihan.equals("Info di Google"))
+            {
+                a = new Intent(Intent.ACTION_WEB_SEARCH);
+                a.putExtra(SearchManager.QUERY,"Polresta Pekanbaru");
+            }else if (pilihan.equals("Exit"))
+            {
+                finish();
+            }
+            startActivity(a);
+
+
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+}
+
+
